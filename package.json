@@ -1,0 +1,65 @@
+{
+  "name": "dsh-skill-jnkgg",
+  "version": "0.1.0",
+  "description": "技能库管家 for DeepSeek Harness：把任意目录的 Agent Skills 挂进 DSH，目录限量展示、正文按需加载、隐藏不删除、中文关键词直达。带可视化设置面。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/page.mjs",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "agent-skills",
+    "skill-manager",
+    "lazy-loading",
+    "skill-router",
+    "token-saving"
+  ],
+  "license": "MIT",
+  "author": "xiaomeng (https://github.com/1843970078)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1843970078/xiaomeng-dsh-skill-jnkgg.git"
+  },
+  "homepage": "https://github.com/1843970078/xiaomeng-dsh-skill-jnkgg#readme",
+  "bugs": {
+    "url": "https://github.com/1843970078/xiaomeng-dsh-skill-jnkgg/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    }
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  }
+}

@@ -1,0 +1,67 @@
+dsh-skill-jnkgg
+===============
+
+本仓库是**站在别人肩膀上**做出来的：核心机制与接口用法都来自阅读其他开源项目，
+本仓库的贡献是在此之上做了面向"大型技能库"的优化与产品化。
+
+一、接口与机制来源（读了源码学到的，代码为自行实现）
+
+1. Jesse-njx/dsh-skillport
+   仓库：https://github.com/Jesse-njx/dsh-skillport
+   许可：MIT
+   借鉴内容：
+     · 向宿主 ctx.skills 注册 SkillProvider 的整体思路（name / list / get 三段式）
+     · "目录限量"设计：maxIndexEntries —— 超出名额的技能不删除，而是降级为
+       user-invocable，仍可被点名调用或被搜索工具找到
+     · 检测宿主已挂载原生 skill-filesystem provider 时避免重复扫描的思路
+   本仓库的差异：改为按"库"为单位管理、加入关键词打分、自动主题分析、
+   中文别名、主题分散选取、库入口 router、可视化设置面。
+
+2. 宿主内置 dsh-personalized-pages provider（@deepseek-ai/dsh-*）
+   来源：DeepSeek Harness 官方实现（本机 F:\deepseek\resources\app.asar 内可查）
+   借鉴内容：
+     · ctx.skills.registerProvider((control) => provider) 的确切调用形状
+     · SkillCandidate 字段约定：provider / source / rank / locator / invocation
+       （含 modelInvocable 与 userInvocable 的语义区分）
+     · control.invalidate() 用于让宿主的技能目录缓存失效
+
+3. sorcerai/skill-router
+   仓库：https://github.com/sorcerai/skill-router
+   借鉴内容：**懒路由理念** —— 整个技能库只暴露极少入口（本仓库对应"每库一条
+   库入口 router"），正文按需加载而非全量注入。未使用其代码（其为 MCP 三工具形态）。
+
+4. legendtkl/agentic-skill-router
+   仓库：https://github.com/legendtkl/agentic-skill-router
+   借鉴内容：**纯本地路由、不依赖 embedding** 的方向判断，以及"disable 不等于
+   delete、可恢复可取回"的原则。未使用其代码。
+
+5. gamedev-skills/awesome-gamedev-agent-skills
+   仓库：https://github.com/gamedev-skills/awesome-gamedev-agent-skills
+   许可：Apache-2.0
+   关系：**仅作为测试用技能库**，未复制任何内容进本仓库。
+   本仓库不包含、也不分发该项目的任何文件。
+
+二、本仓库原创部分
+
+以下均为本仓库自行设计与实现，未复制上述项目代码：
+
+· 以"库（library）"为单位的配置模型与多库管理
+· 关键词打分算法（名称/主题段/描述分级权重、越靠前关键词权重越高）
+· 关键词区分度加权（命中率 ≥70% 的词自动降权，避免"游戏"这类泛词噪音）
+· 中文关键词 → 英文主题词的双向别名表（60+ 条，针对游戏开发常见说法）
+· 自动主题分析（词频统计 + 停用词过滤 + 词干化 + 引擎词剔除 + 实施细节词剔除，
+  零 LLM、零网络）
+· 领域自动判定（判断一个库是否属于单一主题，从而决定"整套可用"还是"关键词精选"）
+· 主题分散选取（按技能名主题段分桶后 round-robin，避免大主题占满名额）
+· 库入口 router 的动态描述生成（单一主题库 vs 混杂库两种策略）
+· 分组索引生成（按目录结构分组，配中文分组说明与逐条中文标签）
+· 可视化设置面（五区：状态 / 库管理 / Token 预算 / 技能浏览 / 日志）
+· 配置原子写入与自动备份
+
+三、声明
+
+本仓库不包含任何第三方代码副本。所有引用项目的权利归各自作者所有，按其各自
+许可条款使用。若上述任一项目的作者认为本仓库的描述有不当之处，请告知，我方
+会立即更正。
+
+本仓库与 DeepSeek / 幻方无隶属关系，为社区个人作品。

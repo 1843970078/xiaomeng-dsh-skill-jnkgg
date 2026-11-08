@@ -1,0 +1,6 @@
+# dsh-skill-jnkgg 自带挂载声明：装上即注册，不用手改 profile 的 patch。
+- insert:
+    - id: skill-jnkgg
+      name: dsh-skill-jnkgg
+      config:
+        enabled: true
