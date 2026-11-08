@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# 本机配置（含个人路径，不要提交）
+config.json
+*.bak
+*.tmp
